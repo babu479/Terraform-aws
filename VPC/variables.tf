@@ -7,7 +7,6 @@ variable "access-key" {
 }
 variable "secret-key" {
   default = "dxVWszqyYVmTXVRr/79GuKo4OCqql0wmqImDA9vm"
-
 }
 variable "aws-vpc-dhcp-options-domain-name" {
   description = "Specifies DNS name for DHCP options set"
@@ -17,6 +16,7 @@ variable "aws-vpc-dhcp-options-domain-name" {
 variable "aws-vpc-cidr-block" {
   description = "The CIDR block for the VPC. Default value is 10.0.1.0/24"
   default     = "10.0.0.0/16"
+
 }
 
 variable "aws-vpc-instance-tenancy" {
@@ -52,21 +52,25 @@ variable "aws-vpc-name" {
 variable "aws-subnet-public-1a-cidr-block" {
   description = "Subnet public 1a cidr block"
   default     = "10.0.1.0/25"
+
 }
 
 variable "aws-subnet-public-1a-availability-zone" {
   description = "AZ  public 1a cidr block"
   default     = "us-east-1a"
+
 }
 
 variable "aws-subnet-public-1b-cidr-block" {
   description = "Subnet public 1b cidr block"
   default     = "10.0.2.0/25"
+
 }
 
 variable "aws-subnet-public-1b-availability-zone" {
   description = "AZ  public 1b cidr block"
   default     = "us-east-1b"
+
 }
 
 variable "aws-subnet-private-1a-cidr-block" {
@@ -77,6 +81,7 @@ variable "aws-subnet-private-1a-cidr-block" {
 variable "aws-subnet-private-1a-availability-zone" {
   description = "AZ private 1a cidr block"
   default     = "us-east-1a"
+
 }
 
 variable "aws-subnet-private-1b-cidr-block" {
@@ -88,7 +93,6 @@ variable "aws-subnet-private-1b-availability-zone" {
   description = "AZ private 1b cidr block"
   default     = "us-east-1b"
 }
-
 variable "aws-internet-gateway-name" {
   description = "AWS Internet Gateway Name"
   default     = "default"
