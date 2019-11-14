@@ -110,12 +110,12 @@ variable "aws-nat-gateway-name" {
 
 variable "aws-route-table-public-name" {
   description = "AWS Internet Gateway Name"
-  default     = "default"
+  default     = "aws-route-table-public"
 }
 
 variable "aws-route-table-private-name" {
   description = "AWS Internet Gateway Name"
-  default     = "default"
+  default     = "aws-route-table-private"
 }
 
 variable "aws-create-endpoint-s3" {
