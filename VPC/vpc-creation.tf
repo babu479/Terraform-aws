@@ -93,13 +93,14 @@ resource "aws_subnet" "private-1b" {
     }
   
 }
-resource "aws_route_table" "public" {
+/*resource "aws_route_table" "public" {
     vpc_id="${aws_vpc.this.id}"
 
     tags ={
         Name="${var.aws-route-table-public-name}"
     }
 }
+*/
 resource "aws_route_table" "private" {
     vpc_id="${aws_vpc.this.id}"
     tags ={
@@ -117,16 +118,53 @@ resource "aws_route_table_association" "private-1b" {
     route_table_id="${aws_route_table.private.id}"
   
 }
-resource "aws_route_table_association" "public-1a" {
+/* /*resource "aws_route_table_association" "public-1a" {
     subnet_id="${aws_subnet.public-1a.id}"
     route_table_id="${aws_route_table.public.id}"
-}
+} */
   
 resource "aws_route_table_association" "public-1b" {
     subnet_id="${aws_subnet.public-1b.id}"
-    route_table_id="${aws_route_table.public.id}"
+    route_table_id="${aws_default_route_table.this.id}"
   
 }
+resource "aws_route_table_association" "public-1a" {
+    subnet_id="${aws_subnet.public-1a.id}"
+    route_table_id="${aws_default_route_table.this.id}"
+  
+}
+
+resource "aws_default_route_table" "this" {
+    default_route_table_id="${aws_vpc.this.default_route_table_id}"
+tags ={
+    Name ="aws-route-table-public"
+}
+ 
+}
+/* resource "aws_main_route_table_association" "this" {
+    subnet_id="${aws_subnet.public-1a.id}"
+    route_table_id="${aws_default_route_table.this.id}"
+  
+} */
+
+resource "aws_internet_gateway" "this" {
+    vpc_id="${aws_vpc.this.id}"
+    tags ={
+        Name = "${var.aws-internet-gateway-name}"
+    }
+  
+}
+resource "aws_eip" "this" {
+/*     count="${var.aws-create-nat-gateway}" */
+    vpc="true"
+
+    tags ={
+        Name="${var.aws-eip-name}"
+    }
+  
+}
+
+
 
 
 

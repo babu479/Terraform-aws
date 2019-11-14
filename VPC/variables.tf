@@ -41,7 +41,7 @@ variable "aws-vpc-assign-generated-ipv6-cidr-block" {
 
 variable "aws-create-nat-gateway" {
   description = "Should be true to enable NAT gateway creation"
-  default     = false
+  default     = true
 }
 
 variable "aws-vpc-name" {
