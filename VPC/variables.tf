@@ -120,10 +120,21 @@ variable "aws-route-table-private-name" {
 
 variable "aws-create-endpoint-s3" {
   description = "Create S3 service endpoint"
-  default     = false
+  default     = 0
 }
 
 variable "aws-endpoint-s3-service-name" {
   description = "Service name for endpoint"
-  default     = ""
+  default     = "com.amazonaws.us-east-1.s3"
 }
+
+variable "Peering_vpc_id" {
+  description= "this is for aws peering  id"
+  default="vpc-0d24e89c98bc54c4d"
+
+}
+variable "Peering_owner_id" {
+  description="This is for aws peering owner id"
+  default="vpc-0c611b594aa90894e"
+}
+

@@ -184,18 +184,43 @@ resource "aws_route" "private_nat_gateway" {
     nat_gateway_id="${aws_nat_gateway.this.id}"
   
 }
-/* resource "aws_vpc_endpoint" "private_endpoint_s3" {
+resource "aws_vpc_endpoint" "private_endpoint_s3" {
     vpc_id="${aws_vpc.this.id}"
     service_name="${var.aws-endpoint-s3-service-name}"
-    route_table_ids="${aws_route_table.private.id}"
+    #route_table_ids="${aws_route_table.private.id}"
 
-} */
-/* resource "aws_vpc_endpoint" "public_endpoint_s3" {
+}
+resource "aws_vpc_endpoint_route_table_association" "private_endpoint_rt_s3" {
+  route_table_id  = "${aws_route_table.private.id}"
+  vpc_endpoint_id = "${aws_vpc_endpoint.private_endpoint_s3.id}"
+}
+resource "aws_vpc_endpoint" "public_endpoint_s3" {
+    count="${var.aws-create-endpoint-s3}"
     vpc_id="${aws_vpc.this.id}"
     service_name="${var.aws-endpoint-s3-service-name}"
-    route_table_ids="[${aws_default_route_table.this.id}]"
-  
+    vpc_endpoint_type="Interface"
+    route_table_ids=["${aws_default_route_table.this.id}"]
+    tags = {
+        Name = "aws-s3-endpoint"
+    }
+}
+
+ /*resource "aws_vpc_endpoint_route_table_association" "public_endpoint_rt_s3" {
+  route_table_id  = "${aws_default_route_table.this.id}"
+  vpc_endpoint_id = "${aws_vpc_endpoint.public_endpoint_s3.id}"
 } */
+resource "aws_vpc_peering_connection" "this" {
+    peer_owner_id="vpc-0c611b594aa90894e"
+    peer_vpc_id="vpc-0d24e89c98bc54c4d"
+    vpc_id="${aws_vpc.this.id}"
+    accepter{
+        allow_remote_vpc_dns_resolution=true
+    }
+    requester{
+        allow_remote_vpc_dns_resolution=true
+    }
+}
+
 
 
 
