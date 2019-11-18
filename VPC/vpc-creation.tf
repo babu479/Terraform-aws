@@ -209,7 +209,7 @@ resource "aws_vpc_endpoint" "public_endpoint_s3" {
   route_table_id  = "${aws_default_route_table.this.id}"
   vpc_endpoint_id = "${aws_vpc_endpoint.public_endpoint_s3.id}"
 } */
-resource "aws_vpc_peering_connection" "this" {
+/* resource "aws_vpc_peering_connection" "this" {
     peer_owner_id="vpc-0c611b594aa90894e"
     peer_vpc_id="vpc-0d24e89c98bc54c4d"
     vpc_id="${aws_vpc.this.id}"
@@ -219,7 +219,50 @@ resource "aws_vpc_peering_connection" "this" {
     requester{
         allow_remote_vpc_dns_resolution=true
     }
+} */
+resource "aws_ec2_transit_gateway" "test-tgw" {
+    description = "Transit gateway testing scenario with 2 vpc's"
+    default_route_table_association="disable"
+    default_route_table_propagation="disable"
+    tags={
+        Name ="Transit_gateway"
+    }
+  
 }
+resource "aws_ec2_transit_gateway_vpc_attachment" "tgw_vpc_atta_1" {
+    subnet_ids=["${aws_subnet.private-1a.id}","${aws_subnet.private-1b.id}"]
+    transit_gateway_id="${aws_ec2_transit_gateway.test-tgw.id}"
+    vpc_id="${aws_vpc.this.id}"
+    transit_gateway_default_route_table_association= false
+    transit_gateway_default_route_table_propagation= false
+    tags={
+        Name="tgw-attach-vpc1"
+    }
+depends_on=["aws_ec2_transit_gateway.test-tgw"]
+  
+}
+resource "aws_ec2_transit_gateway_route_table" "tgw-rt" {
+    transit_gateway_id="${aws_ec2_transit_gateway.test-tgw.id}"
+    tags ={
+        Name="tgw-rt"
+    }
+  depends_on=["aws_ec2_transit_gateway.test-tgw"]
+}
+resource "aws_ec2_transit_gateway_route_table_association" "tgw-vpc1-associa" {
+    transit_gateway_attachment_id="${aws_ec2_transit_gateway_vpc_attachment.tgw_vpc_atta_1.id}"
+    transit_gateway_route_table_id="${aws_ec2_transit_gateway_route_table.tgw-rt.id}"
+  
+}
+resource "aws_ec2_transit_gateway_route_table_propagation" "tgw-vpc1-propaga" {
+    transit_gateway_attachment_id="${aws_ec2_transit_gateway_vpc_attachment.tgw_vpc_atta_1.id}"
+    transit_gateway_route_table_id="${aws_ec2_transit_gateway_route_table.tgw-rt.id}"
+  
+}
+
+
+
+
+
 
 
 
